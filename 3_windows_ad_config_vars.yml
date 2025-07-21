@@ -1,0 +1,5 @@
+# AD Domain configuration
+dns_domain_name: demo.local                      # Your domain name
+domain_netbios_name: DEMO                        # NetBIOS name
+ad_safe_mode_pass: 'SuperSecretSafeModePW1!'     # Directory Services Restore Mode password. Use Ansible Vault for this in production!
+install_dns: true

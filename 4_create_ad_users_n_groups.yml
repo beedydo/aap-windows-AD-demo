@@ -1,0 +1,23 @@
+- name: Manage AD users and groups
+  hosts: windows
+  gather_facts: false
+  vars_files:
+    - 4_ad_users_and_groups_vars.yml
+
+  tasks:
+    - name: Add domain user
+      community.windows.win_domain_user:
+        name: "{{ ad_domain_user_name }}"
+        password: "{{ ad_domain_user_password }}"
+        state: present
+        domain_username: "{{ ad_domain_admin_username }}"
+        domain_password: "{{ ad_domain_admin_password }}"
+
+    - name: Ensure group exists and add user to it
+      community.windows.win_domain_group_membership:
+        name: "{{ ad_group_name }}"
+        members:
+          - "{{ ad_domain_user_name }}"
+        state: present
+        domain_username: "{{ ad_domain_admin_username }}"
+        domain_password: "{{ ad_domain_admin_password }}"

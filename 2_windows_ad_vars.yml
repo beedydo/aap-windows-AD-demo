@@ -1,0 +1,7 @@
+# Windows connection credentials (for WinRM)
+ansible_user: Administrator                       # Default for Windows on AWS
+ansible_password: "{{ win_admin_password }}"      # You can define win_admin_password in another vault file for security
+
+ansible_connection: winrm
+ansible_port: 5986
+ansible_winrm_server_cert_validation: ignore

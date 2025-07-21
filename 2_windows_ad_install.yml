@@ -1,0 +1,13 @@
+- name: Install Active Directory Domain Services
+  hosts: windows
+  gather_facts: false
+  vars_files:
+    - provisioned_instance_output.yml
+    - 2_windows_ad_vars.yml
+
+  tasks:
+    - name: Ensure AD-Domain-Services feature is installed
+      ansible.windows.win_feature:
+        name: AD-Domain-Services
+        state: present
+        include_management_tools: true

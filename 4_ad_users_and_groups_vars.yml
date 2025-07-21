@@ -1,0 +1,7 @@
+ad_domain_admin_username: Administrator
+ad_domain_admin_password: AdminPassword
+ad_domain_user_name: johndoe
+ad_domain_user_password: UserPass@123
+ad_group_name: DemoGroup
+
+#For production use, encrypt passwords with Ansible Vault!

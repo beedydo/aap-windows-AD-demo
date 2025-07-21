@@ -1,0 +1,18 @@
+- name: Create AD Domain
+  hosts: windows
+  gather_facts: false
+  vars_files:
+  - 3_windows_ad_config_vars.yml
+ 
+  tasks:
+    - name: Promote domain controller and create new domain
+      ansible.windows.win_domain:
+        dns_domain_name: "{{ dns_domain_name }}"
+        domain_netbios_name: "{{ domain_netbios_name }}"
+        safe_mode_password: "{{ ad_safe_mode_pass }}"
+        install_dns: "{{ install_dns }}"
+      register: domain_result
+
+    - name: Show result of domain creation
+      debug:
+        var: domain_result

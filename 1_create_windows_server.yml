@@ -1,0 +1,43 @@
+- name: Provision EC2 Instance with Key Properties
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - 0_windows_ec2_input_vars.yml
+
+  tasks:
+    - name: Launch EC2 instance
+      amazon.aws.ec2_instance:
+        name: "{{ instance_name }}"
+        image_id: "{{ ami_id }}"
+        instance_type: "{{ instance_type }}"
+        key_name: "{{ key_name }}"
+        vpc_subnet_id: "{{ subnet_id }}"
+        security_group: "{{ security_group_ids }}"
+        network:
+          assign_public_ip: "{{ assign_public_ip }}"
+        volumes:
+          - "{{ root_volume }}"
+        wait: true
+      register: ec2_result
+
+    - name: Display instance details
+      ansible.builtin.debug:
+        msg:
+          - "Instance ID: {{ ec2_result.instances[0].instance_id }}"
+          - "Public IP: {{ ec2_result.instances[0].public_ip_address }}"
+          - "AMI: {{ ami_id }}"
+          - "Type: {{ instance_type }}"
+
+    - name: Write instance connection details to YAML file
+      ansible.builtin.copy:
+        content: |
+          key_name: "{{ key_name }}"
+          public_ip: "{{ ec2_result.instances[0].public_ip_address }}"
+        dest: provisioned_instance_output.yml     ### OUTPUT
+
+- name: Add provisioned Windows host to in-memory inventory
+  hosts: localhost
+  tasks:
+    - add_host:
+        name: "{{ public_ip }}"
+        groups: windows
