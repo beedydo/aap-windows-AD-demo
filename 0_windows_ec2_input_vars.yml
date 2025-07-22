@@ -1,11 +1,11 @@
-instance_name: my-ansible-ec2
-ami_id: ami-0abcdef1234567890    # Substitute with your AMI ID
+instance_name: my-windows-ad-ansible-ec2
+ami_id: ami-0de75ee1d458b125a    # Substitute with your AMI ID
 instance_type: t3.micro
-key_name: my-keypair             # Replace with your AWS key pair name (not a .pem file)
+key_name: aap-key             # Replace with your AWS key pair name (not a .pem file)
 aws_region: ap-southeast-1
-vpc_id: vpc-0123456789abcdef0
-subnet_id: subnet-0123456789abcdef0
-security_group_ids: sg-0123456789abcdef0
+vpc_id: vpc-08198b8263a9c5d81
+subnet_id: subnet-0853f1cb2060bd666
+security_group_ids: sg-04ce5d3ea3832de53
 assign_public_ip: true
 root_volume:
   device_name: /dev/xvda
