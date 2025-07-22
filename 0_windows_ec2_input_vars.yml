@@ -5,8 +5,7 @@ key_name: my-keypair             # Replace with your AWS key pair name (not a .p
 aws_region: ap-southeast-1
 vpc_id: vpc-0123456789abcdef0
 subnet_id: subnet-0123456789abcdef0
-security_group_ids:
-  - sg-0123456789abcdef0
+security_group_ids: sg-0123456789abcdef0
 assign_public_ip: true
 root_volume:
   device_name: /dev/xvda
