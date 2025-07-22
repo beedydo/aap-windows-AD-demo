@@ -40,5 +40,5 @@
   hosts: localhost
   tasks:
     - add_host:
-        name: "{{ public_ip }}"
+        name: "{{ ec2_result.instances[0].public_ip_address }}"
         groups: windows
