@@ -2,6 +2,7 @@ instance_name: my-ansible-ec2
 ami_id: ami-0abcdef1234567890    # Substitute with your AMI ID
 instance_type: t3.micro
 key_name: my-keypair             # Replace with your AWS key pair name (not a .pem file)
+aws_region: ap-southeast-1
 vpc_id: vpc-0123456789abcdef0
 subnet_id: subnet-0123456789abcdef0
 security_group_ids:
