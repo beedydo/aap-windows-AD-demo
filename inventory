@@ -1,5 +1,5 @@
 [windows]
-"{{ windows_ad_server }}
+13.212.200.230
 
 [windows:vars]
 ansible_user=Administrator
