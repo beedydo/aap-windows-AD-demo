@@ -1,5 +1,5 @@
 - name: Create AD Domain
-  hosts: windows
+  hosts: "{{ windows_ad_server }}"
   gather_facts: false
   vars:
     ansible_user: Administrator
