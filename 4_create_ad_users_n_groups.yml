@@ -1,23 +1,50 @@
-- name: Manage AD users and groups
+- name: Create AD groups and users under "Users" container
   hosts: windows
   gather_facts: false
-  vars_files:
-    - 4_ad_users_and_groups_vars.yml
+  vars:
+    ansible_user: Administrator
+    ansible_password: "jvUo$=9qTK1J7T2ts9F=Q&(792T5NPZl"
+    ansible_connection: winrm
+    ansible_winrm_server_cert_validation: ignore
+    ansible_port: 5985
+
+    ad_users_container: "CN=Users,DC=demo,DC=dns,DC=name,DC=local"
+    ad_groups:
+      - development
+      - operations
+    ad_users:
+      - name: Abby
+        password: "Password1!"
+        groups: [development]
+      - name: Bob
+        password: "Password1!"
+        groups: [development]
+      - name: Candy
+        password: "Password1!"
+        groups: [operations]
+      - name: Dog
+        password: "Password1!"
+        groups: [operations]
 
   tasks:
-    - name: Add domain user
-      community.windows.win_domain_user:
-        name: "{{ ad_domain_user_name }}"
-        password: "{{ ad_domain_user_password }}"
+    - name: Ensure AD groups exist in the Users container
+      microsoft.ad.group:
+        name: "{{ item }}"
+        scope: global
+        path: "{{ ad_users_container }}"
         state: present
-        domain_username: "{{ ad_domain_admin_username }}"
-        domain_password: "{{ ad_domain_admin_password }}"
+      loop: "{{ ad_groups }}"
 
-    - name: Ensure group exists and add user to it
-      community.windows.win_domain_group_membership:
-        name: "{{ ad_group_name }}"
-        members:
-          - "{{ ad_domain_user_name }}"
+    - name: Ensure AD users exist and are in their correct groups
+      microsoft.ad.user:
+        identity: "{{ item.name }}"
+        password: "{{ item.password }}"
+        path: "{{ ad_users_container }}"
         state: present
-        domain_username: "{{ ad_domain_admin_username }}"
-        domain_password: "{{ ad_domain_admin_password }}"
+        groups:
+          set: "{{ item.groups }}"
+        update_password: always
+        password_never_expires: true
+        user_cannot_change_password: false
+        enabled: true
+      loop: "{{ ad_users }}"

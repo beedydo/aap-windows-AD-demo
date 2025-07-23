@@ -1,8 +1,18 @@
 - name: Create AD Domain
   hosts: windows
   gather_facts: false
-  vars_files:
-  - 3_windows_ad_config_vars.yml
+  vars:
+    ansible_user: Administrator
+    ansible_password: jvUo$=9qTK1J7T2ts9F=Q&(792T5NPZl
+    ansible_connection: winrm
+    ansible_winrm_server_cert_validation: ignore
+    ansible_port: 5985
+    # AD Domain configuration
+    dns_domain_name: demo.dns.name.local                      # Your domain name
+    domain_netbios_name: DEMO                        # NetBIOS name
+    ad_safe_mode_pass: 'SuperSecretSafeModePW1!'     # Directory Services Restore Mode password. Use Ansible Vault for this in production!
+    install_dns: true
+  become: false
  
   tasks:
     - name: Promote domain controller and create new domain
