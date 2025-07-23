@@ -54,10 +54,10 @@
       become: true
       ansible.builtin.lineinfile:
         path: /etc/hosts
-        line: "{{ ec2_result.instances[0].public_ip_address }} {{ ec2_result.instances[0].instance_id }}"
+        line: "{{ ec2_result.instances[0].public_ip_address }} {{ ec2_result.instances[0].private_dns_name }}"
         state: present
         create: yes
 
     - name: Show entry to /etc/hosts
       ansible.builtin.debug:
-        msg: "{{ ec2_result.instances[0].public_ip_address }} {{ ec2_result.instances[0].instance_id }}"
+        msg: "{{ ec2_result.instances[0].public_ip_address }} {{ ec2_result.instances[0].private_dns_name }}"
