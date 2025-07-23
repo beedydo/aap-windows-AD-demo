@@ -36,9 +36,10 @@
           public_ip: "{{ ec2_result.instances[0].public_ip_address }}"
         dest: provisioned_instance_output.yml     ### OUTPUT
 
-- name: Add provisioned Windows host to in-memory inventory
-  hosts: localhost
-  tasks:
-    - add_host:
-        name: "{{ ec2_result.instances[0].public_ip_address }}"
-        groups: windows
+    - name: Ensure host entry present in /etc/hosts
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        line: "{{ ec2_result.instances[0].public_ip_address }} {{ ec2_result.instances[0].instance_id }}"
+        state: present
+        create: yes
