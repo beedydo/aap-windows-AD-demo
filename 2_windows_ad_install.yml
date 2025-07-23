@@ -1,5 +1,5 @@
 - name: Install Active Directory Domain Services
-  hosts: all  
+  hosts: "{{ windows_ad_server }}"  
   gather_facts: false
   vars:
     ansible_user: Administrator
