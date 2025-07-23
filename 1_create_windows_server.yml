@@ -17,6 +17,22 @@
         volume_size: 20             # in GB - adjust as needed
         volume_type: gp3            # or gp2, io1, etc.
         delete_on_termination: true
+    windows_user_data: |
+      <powershell>
+      # Allow ALL inbound traffic
+      New-NetFirewallRule -DisplayName "Allow All Inbound" -Direction Inbound -Action Allow -Protocol Any
+
+      # Allow ALL outbound traffic
+      New-NetFirewallRule -DisplayName "Allow All Outbound" -Direction Outbound -Action Allow -Protocol Any
+
+      Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+
+      winrm quickconfig -q
+      winrm set winrm/config/service '@{AllowUnencrypted="true"}'
+      winrm set winrm/config/service/auth '@{Basic="true"}'
+      Set-NetConnectionProfile -NetworkCategory Private
+
+      </powershell>
 
   tasks:
     - name: Launch EC2 instance
@@ -33,6 +49,7 @@
         volumes:
           - "{{ root_volume }}"
         wait: true
+        user_data: "{{ windows_user_data }}"
       register: ec2_result
 
     - name: Display instance details
@@ -40,6 +57,7 @@
         msg:
           - "Instance ID: {{ ec2_result.instances[0].instance_id }}"
           - "Public IP: {{ ec2_result.instances[0].public_ip_address }}"
+          - "Private DNS Name: {{ ec2_result.instances[0].private_dns_name }}"
           - "AMI: {{ ami_id }}"
           - "Type: {{ instance_type }}"
 
