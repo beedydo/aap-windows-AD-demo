@@ -1,5 +1,5 @@
 - name: Install Active Directory Domain Services
-  hosts: windows
+  hosts: "{{ windows_ad_server }}"
   gather_facts: false
   vars_files:
     - provisioned_instance_output.yml
