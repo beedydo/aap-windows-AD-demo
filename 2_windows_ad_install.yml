@@ -1,12 +1,12 @@
 - name: Install Active Directory Domain Services
-  hosts: "{{ windows_ad_server }}"
+  hosts: windows  
   gather_facts: false
   vars:
     ansible_user: Administrator
     ansible_password: "jvUo$=9qTK1J7T2ts9F=Q&(792T5NPZl"
     ansible_connection: winrm
     ansible_winrm_server_cert_validation: ignore
-    ansible_port: 5986
+    ansible_port: 5985
   become: false
 
   tasks:
