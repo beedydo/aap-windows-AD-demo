@@ -19,17 +19,25 @@
         delete_on_termination: true
     windows_user_data: |
       <powershell>
-      # Allow ALL inbound traffic
+      ### Allow ALL inbound traffic
       New-NetFirewallRule -DisplayName "Allow All Inbound" -Direction Inbound -Action Allow -Protocol Any
 
-      # Allow ALL outbound traffic
+      ### Allow ALL outbound traffic
       New-NetFirewallRule -DisplayName "Allow All Outbound" -Direction Outbound -Action Allow -Protocol Any
 
+      ### Disables the Windows Defender Firewall for all three profiles: Domain, Public, and Private
       Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
 
+      ### Quickly configures Windows Remote Management (WinRM) on the system.
       winrm quickconfig -q
+
+      ### Configures WinRM to accept unencrypted connections.
       winrm set winrm/config/service '@{AllowUnencrypted="true"}'
+
+      ### Enables Basic Authentication for WinRM.
       winrm set winrm/config/service/auth '@{Basic="true"}'
+
+      ### Sets the active network profiles (wired/Wi-Fi adapters) on the server to "Private" rather than Public. (less resrictive)
       Set-NetConnectionProfile -NetworkCategory Private
 
       </powershell>
