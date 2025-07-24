@@ -26,3 +26,10 @@
     - name: Show result of domain creation
       debug:
         var: domain_result
+
+    - name: Reboot Windows server after AD domain creation
+      ansible.windows.win_reboot:
+        msg: "Rebooting for Active Directory Domain installation to complete."
+        pre_reboot_delay: 10
+        post_reboot_delay: 60
+        reboot_timeout: 600

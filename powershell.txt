@@ -1,0 +1,15 @@
+<powershell>
+# Allow ALL inbound traffic
+New-NetFirewallRule -DisplayName "Allow All Inbound" -Direction Inbound -Action Allow -Protocol Any
+
+# Allow ALL outbound traffic
+New-NetFirewallRule -DisplayName "Allow All Outbound" -Direction Outbound -Action Allow -Protocol Any
+
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+
+winrm quickconfig -q
+winrm set winrm/config/service '@{AllowUnencrypted="true"}'
+winrm set winrm/config/service/auth '@{Basic="true"}'
+Set-NetConnectionProfile -NetworkCategory Private
+
+</powershell>
